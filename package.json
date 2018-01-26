@@ -1,0 +1,24 @@
+{
+  "name": "ms-import",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "tape src/**/*.test.js | tap-dot",
+    "start": "node -r ./src/init ./src/index.js",
+    "insert": "node -r ./src/init ./src/insert.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "csv-reader": "^1.0.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
+    "tap-dot": "^1.0.5",
+    "tape": "^4.8.0"
+  }
+}
