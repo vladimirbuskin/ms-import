@@ -7,7 +7,7 @@ export default async function insert(insertToDb, structure, meta) {
   if (meta == null) throw new Error('meta is required')
   if (Object.keys(structure).length != Object.keys(meta).length) throw new Error('meta should contain the same number of keys as structure')
 
-  Object.keys(structure).forEach(async tableName => {
+  for (var tableName of Object.keys(structure)) {
     var data = structure[tableName]
     var key = meta[tableName]
     // return keys, and remove those
@@ -20,7 +20,7 @@ export default async function insert(insertToDb, structure, meta) {
     newIds.forEach((id, i) => data[i][key] = id)
 
     replaceStructure(structure, prevIds, newIds);
-  })
+  }
   return structure;
 }
 

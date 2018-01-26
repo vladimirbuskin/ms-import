@@ -5,8 +5,8 @@ import range from './lib/range'
 
 let id = 0;
 let structure = {
-	location: [],
 	project: [],
+	location: [],
 	permit: []
 }
 
@@ -15,7 +15,7 @@ let getKey = (type, id) => [type,id,'asdf1234!@#$'].join("|");
 
 
 
-read('./data.csv', function(err, data) {
+read('./data.csv', async function(err, data) {
 	if (err) throw err;
 
 	if (data != null) {
@@ -34,13 +34,13 @@ read('./data.csv', function(err, data) {
 			{
 				id: projectId, 
 				description: desc,
+				projectType: 903
 			}
 		)
 		structure.location.push(
 			{
 				id: locationId, 
-				lat: +lat, 
-				lng: +lng, 
+				name: lat + ' ' + lng,
 				projectId
 			}
 		)
@@ -67,19 +67,13 @@ read('./data.csv', function(err, data) {
 		
 		var insertToDb = async function (data, table, key) {
 
-			let ids = null;
-
-			try {
-				ids = await knex(table).insert(data).returning(key);
-			} catch(e) {
-				
-			}
+			let ids = await knex(table).insert(data).returning(key);
 			console.log('inserted', data, ids);
 
 			return ids
 		}
 
-		insert(insertToDb, structure, {
+		await insert(insertToDb, structure, {
 			location: 'id',
 			project: 'id',
 			permit: 'id',
