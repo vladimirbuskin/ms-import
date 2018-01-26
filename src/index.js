@@ -4,9 +4,9 @@ import insert from './insert'
 
 let id = 0;
 let structure = {
+	location: [],
 	project: [],
-	permit: [],
-	location: []
+	permit: []
 }
 
 
@@ -63,7 +63,7 @@ read('./data.csv', function(err, data) {
 	}
 	else {
 		//insert(knex, structure);
-		console.log(structure)
+		console.log('insert here');
 	}
 });
 

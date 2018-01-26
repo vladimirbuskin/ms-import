@@ -86,7 +86,7 @@ describe('insert', function () {
         })
     })
 
-    it('insert', function () {
+    it('insert', async function () {
         var l = {
             project: [
                 { id:'project:1', description: 'text1' },
@@ -97,19 +97,35 @@ describe('insert', function () {
                 { id: 'location:2', lat: 32.2, projectId:'project:2' } 
             ]
         }
-        var ll = insert(knexStub, l, {project:'id', location: 'id'})
-              
-        console.log('res',l)
+        var res = await insert(knexStub, l, {project:'id', location: 'id'})
+        
+        //console.log(res)
+        //console.log('res',l)
         //console.log(JSON.stringify(l))
-        // expect(ll).deep.eql({
-        //     project: [
-        //         { id:1, description: 'text1' },
-        //         { id:2, description: 'text2' } 
-        //     ],
-        //     location: [ 
-        //         { id: 1, lat: 32.1, projectId:1 },
-        //         { id: 2, lat: 32.2, projectId:2 } 
-        //     ]
-        // })
+        expect(res).deep.eql({
+            project: [
+                { id:1, description: 'text1' },
+                { id:2, description: 'text2' } 
+            ],
+            location: [ 
+                { id: 1, lat: 32.1, projectId:1 },
+                { id: 2, lat: 32.2, projectId:2 } 
+            ]
+        })
     })
+
+    // it.only('insert', async function () {
+    //     var a = {
+    //         project: {},
+    //         location: {},
+    //         permit: {}
+    //     }
+    //     var b = {
+    //         location: {},
+    //         permit: {},
+    //         project: {}
+    //     }
+    //     console.log(Object.keys(a));
+    //     console.log(Object.keys(b));
+    // })    
 })
