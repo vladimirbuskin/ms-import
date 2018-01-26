@@ -2,11 +2,9 @@ import insert from './insert'
 import { replaceTableId, replaceStructure } from './insert'
 import range from './lib/range'
 
-var knexStub = ({
-    insert: (d) => ({
-        returning: () => range(d.length)
-    })
-})
+var knexStub = async (data, table, id) => { 
+    return range(data.length)
+}
 
 describe('insert', function () {
 
@@ -95,9 +93,17 @@ describe('insert', function () {
             location: [ 
                 { id: 'location:1', lat: 32.1, projectId:'project:1' },
                 { id: 'location:2', lat: 32.2, projectId:'project:2' } 
+            ],
+            permit: [
+                { id:'permit:1', description: 'permit1', projectId:'project:1' },
+                { id:'permit:2', description: 'permit2', projectId:'project:2' }
             ]
         }
-        var res = await insert(knexStub, l, {project:'id', location: 'id'})
+
+        var insertFun = async (data, table, id) => { 
+            return range(data.length)
+        }
+        var res = await insert(insertFun, l, {project:'id', location: 'id', permit: 'id'})
         
         //console.log(res)
         //console.log('res',l)
@@ -110,6 +116,10 @@ describe('insert', function () {
             location: [ 
                 { id: 1, lat: 32.1, projectId:1 },
                 { id: 2, lat: 32.2, projectId:2 } 
+            ],
+            permit: [
+                { id:1, description: 'permit1', projectId:1 },
+                { id:2, description: 'permit2', projectId:2 } 
             ]
         })
     })

@@ -1,6 +1,7 @@
 import read from './read/read'
 import db from './database/db'
 import insert from './insert'
+import range from './lib/range'
 
 let id = 0;
 let structure = {
@@ -12,16 +13,6 @@ let structure = {
 
 let getKey = (type, id) => [type,id,'asdf1234!@#$'].join("|");
 
-
-let knex = db({
-  client: 'mssql',
-  connection: {
-    host : '127.0.0.1',
-    user : 'mstar',
-    password : '1',
-    database : 'p'
-  }
-});
 
 
 read('./data.csv', function(err, data) {
@@ -48,8 +39,8 @@ read('./data.csv', function(err, data) {
 		structure.location.push(
 			{
 				id: locationId, 
-				lat, 
-				lng,
+				lat: +lat, 
+				lng: +lng, 
 				projectId
 			}
 		)
@@ -57,13 +48,42 @@ read('./data.csv', function(err, data) {
 			{
 				id: permitId, 
 				projectId,
-				desc,
+				description: desc,
 			}
 		)
 	}
-	else {
-		//insert(knex, structure);
-		console.log('insert here');
+	else 
+	{
+
+		let knex = db({
+			client: 'mssql',
+			connection: {
+				host : '127.0.0.1',
+				user : 'mstar',
+				password : '1',
+				database : 'p'
+			}
+		});
+		
+		var insertToDb = async function (data, table, key) {
+
+			let ids = null;
+
+			try {
+				ids = await knex(table).insert(data).returning(key);
+			} catch(e) {
+				
+			}
+			console.log('inserted', data, ids);
+
+			return ids
+		}
+
+		insert(insertToDb, structure, {
+			location: 'id',
+			project: 'id',
+			permit: 'id',
+		});
 	}
 });
 
