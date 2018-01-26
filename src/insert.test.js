@@ -51,11 +51,11 @@ describe('insert', function () {
     it('replaceTableId', function () {
         var l = [ { id: 'location|1', lat: 32.1 },
                   { id: 'location|2', lat: 32.2 } ]
-        replaceTableId(l, ['location|1', 'location|2'], [1, 2])
+        replaceTableId(l, ['location|2', 'location|1'], [1, 2])
               
         expect(l).deep.eql([
-            { id: 1, lat: 32.1 },
-            { id: 2, lat: 32.2 }
+            { id: 2, lat: 32.1 },
+            { id: 1, lat: 32.2 }
         ])
     })
     
@@ -91,19 +91,23 @@ describe('insert', function () {
                 { id:'project:2', description: 'text2' } 
             ],
             location: [ 
-                { id: 'location:1', lat: 32.1, projectId:'project:1' },
-                { id: 'location:2', lat: 32.2, projectId:'project:2' } 
+                { id: 'location:1', lat: 32.1, projectId:'project:2' },
+                { id: 'location:2', lat: 32.2, projectId:'project:1' } 
             ],
             permit: [
-                { id:'permit:1', description: 'permit1', projectId:'project:1' },
-                { id:'permit:2', description: 'permit2', projectId:'project:2' }
+                { id:'permit:1', description: 'permit1', projectId:'project:2' },
+                { id:'permit:2', description: 'permit2', projectId:'project:1' }
             ]
         }
 
         var insertFun = async (data, table, id) => { 
             return range(data.length)
         }
-        var res = await insert(insertFun, l, {project:'id', location: 'id', permit: 'id'})
+        var res = await insert(insertFun, l, {
+            project:'id', 
+            location: 'id', 
+            permit: 'id'
+        })
         
         //console.log(res)
         //console.log('res',l)
@@ -114,12 +118,12 @@ describe('insert', function () {
                 { id:2, description: 'text2' } 
             ],
             location: [ 
-                { id: 1, lat: 32.1, projectId:1 },
-                { id: 2, lat: 32.2, projectId:2 } 
+                { id: 1, lat: 32.1, projectId:2 },
+                { id: 2, lat: 32.2, projectId:1 } 
             ],
             permit: [
-                { id:1, description: 'permit1', projectId:1 },
-                { id:2, description: 'permit2', projectId:2 } 
+                { id:1, description: 'permit1', projectId:2 },
+                { id:2, description: 'permit2', projectId:1 } 
             ]
         })
     })

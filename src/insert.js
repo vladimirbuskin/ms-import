@@ -8,16 +8,16 @@ export default async function insert(insertToDb, structure, meta) {
   if (Object.keys(structure).length != Object.keys(meta).length) throw new Error('meta should contain the same number of keys as structure')
 
   Object.keys(structure).forEach(async tableName => {
-    var table = structure[tableName]
+    var data = structure[tableName]
     var key = meta[tableName]
     // return keys, and remove those
-    var prevIds = table.map(r => { let keyValue = r[key]; delete r[key]; return keyValue; })
+    var prevIds = data.map(r => { let keyValue = r[key]; delete r[key]; return keyValue; })
     
     //var newIds = await knex.insert(table).returning(meta[tableName])
-    var newIds = await insertToDb(table, tableName, key)//.returning(meta[tableName])
+    var newIds = await insertToDb(data, tableName, key)//.returning(meta[tableName])
 
     // set new keys which came from database
-    newIds.forEach((id, i) => table[i][key] = id)
+    newIds.forEach((id, i) => data[i][key] = id)
 
     replaceStructure(structure, prevIds, newIds);
   })
@@ -32,15 +32,13 @@ export function replaceStructure(structure, idsPrev, idsNew) {
 }
 
 export function replaceTableId(records, idsPrev, idsNew) {
-
-  idsPrev.forEach((keyValue,i) => {
-    records.forEach((r,i) => {    
+  idsPrev.forEach((prev,i) => {
+    let nw = idsNew[i];
+    records.forEach(r => {    
       Object.keys(r).forEach(k => {
-        
-        if (r[k] === keyValue) {
-          r[k] = idsNew[i]
+        if (r[k] === prev) {
+          r[k] = nw
         }
-        
       })      
     })
   })
