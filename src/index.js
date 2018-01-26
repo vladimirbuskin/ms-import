@@ -4,19 +4,13 @@ import insert from './insert'
 
 let id = 0;
 let structure = {
-
-	__meta: [
-		{name:'project', return:'id'},
-		{name:'location', return:'id'},
-		{name:'permit', return:'id'},
-	],
-
-	projects: [],
-	permits: [],
-	locations: []
+	project: [],
+	permit: [],
+	location: []
 }
 
-let getKey = (type, id) => ["type",id,"__key_uniquier__"].join("|");
+
+let getKey = (type, id) => [type,id,'asdf1234!@#$'].join("|");
 
 
 let knex = db({
@@ -68,7 +62,8 @@ read('./data.csv', function(err, data) {
 		)
 	}
 	else {
-		insert(knex, structure);
+		//insert(knex, structure);
+		console.log(structure)
 	}
 });
 
