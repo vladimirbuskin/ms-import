@@ -1,39 +1,57 @@
 import read from './read/read'
+import db from './database/db'
+import insert from './insert'
 
-var id = 0;
+let id = 0;
+let structure = {
 
-var structure = {
+	__meta: [
+		{name:'project', return:'id'},
+		{name:'location', return:'id'},
+		{name:'permit', return:'id'},
+	],
+
 	projects: [],
 	permits: [],
 	locations: []
 }
-/*
-*/
+
+let getKey = (type, id) => ["type",id,"__key_uniquier__"].join("|");
+
+
+let knex = db({
+  client: 'mssql',
+  connection: {
+    host : '127.0.0.1',
+    user : 'mstar',
+    password : '1',
+    database : 'p'
+  }
+});
+
 
 read('./data.csv', function(err, data) {
 	if (err) throw err;
+
 	if (data != null) {
-		// { permit: 'pm123', desc: 'simple1', det: 'details', lat: 32.1, lng: '-128.3' }
-		console.log(data);
-		var { permit, desc, det, lat, lng } = data;
-
 		id++;
+		let { permit, desc, det, lat, lng } = data;
 
-		let projectId = 'project'+id;
-		let locationId = 'location'+id;
-		let permitId = 'permit'+id;
+		let projectId = getKey('project',id);
+		let locationId = getKey('location',id);
+		let permitId = getKey('permit',id);
 		
 		// location is created for each record
 		// permit is for each record
 		// project is for each record
 
-		structure.projects.push(
+		structure.project.push(
 			{
 				id: projectId, 
-				desc,
+				description: desc,
 			}
 		)
-		structure.locations.push(
+		structure.location.push(
 			{
 				id: locationId, 
 				lat, 
@@ -41,16 +59,16 @@ read('./data.csv', function(err, data) {
 				projectId
 			}
 		)
-		structure.permits.push(
+		structure.permit.push(
 			{
 				id: permitId, 
 				projectId,
 				desc,
 			}
 		)
-
 	}
 	else {
-		console.log(structure);
+		insert(knex, structure);
 	}
 });
+
