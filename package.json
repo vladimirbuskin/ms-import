@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "mocha -w -r ./test/init.js ./src/**/*.test.js",
+    "cov": "nyc --reporter=text mocha -r ./test/init.js ./src/**/*.test.js",
     "start": "nodemon -r ./src/init ./src/index.js"
   },
   "author": "",
@@ -19,6 +20,7 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-register": "^6.26.0",
-    "chai": "^4.1.2"
+    "chai": "^4.1.2",
+    "nyc": "^11.4.1"
   }
 }
