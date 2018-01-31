@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha -w -r ./test/init.js ./src/**/*.test.js",
     "cov": "nyc --reporter=text mocha -r ./test/init.js ./src/**/*.test.js",
+    "build": "babel src --out-dir lib",
     "start": "nodemon -r ./src/init ./src/index.js"
   },
   "author": "",
