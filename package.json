@@ -10,7 +10,7 @@
   "scripts": {
     "test": "mocha -w -r ./test/init.js ./src/**/*.test.js",
     "cov": "nyc --reporter=text mocha -r ./test/init.js ./src/**/*.test.js",
-    "publish": "babel src --out-dir lib | npm publish",
+    "publish": "babel src --out-dir lib && npm publish",
     "start": "nodemon -r ./src/init ./src/index.js"
   },
   "author": "",
