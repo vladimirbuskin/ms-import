@@ -128,18 +128,35 @@ describe('insert', function () {
         })
     })
 
-    // it.only('insert', async function () {
-    //     var a = {
-    //         project: {},
-    //         location: {},
-    //         permit: {}
-    //     }
-    //     var b = {
-    //         location: {},
-    //         permit: {},
-    //         project: {}
-    //     }
-    //     console.log(Object.keys(a));
-    //     console.log(Object.keys(b));
-    // })    
+    it('insert batch', async function () {
+        var cnt = 0;
+        var data = {
+            project: [
+                { id:'project:1', description: 'text1' },
+                { id:'project:2', description: 'text2' },
+                { id:'project:3', description: 'text3' },
+                { id:'project:4', description: 'text4' },
+                { id:'project:5', description: 'text5' },
+                { id:'project:6', description: 'text6' },
+                { id:'project:7', description: 'text7' }
+            ]
+        }
+
+        var insertFun = async (data, table, id) => { 
+            cnt++
+            return range(data.length)
+        }
+        var res = await insert(
+            insertFun, 
+            data, 
+            {
+                project: 'id'
+            },
+            {
+                batch: 3
+            }
+        )
+
+        expect(cnt).equal(3);
+    })    
 })
