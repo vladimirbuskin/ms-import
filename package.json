@@ -2,7 +2,7 @@
   "name": "ms-import",
   "version": "1.0.9",
   "description": "",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "files": [
     "lib/",
     "src/"

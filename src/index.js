@@ -1,4 +1,4 @@
-export {default as read} from './read/readStream'
+export {default as readStream} from './read/readStream'
 export {default as readFull} from './read/readFull'
 export {default as insert} from './lib/insert'
 export {default as range} from './lib/range'
