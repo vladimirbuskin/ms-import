@@ -16,25 +16,32 @@ export default async function insert(insertToDb, structure, meta, options) {
     options = Object.assign({ batch: 100}, options)
     var { batch } = options;
 
+    var prevIds = [];
+    var newIds = [];
+
     // iterate
     for (var i=0; i < data.length/batch; i++) {
 
       // data chunk
-      var chunk = data.slice(i * batch, (i + 1) * batch)
+      let chunk = data.slice(i * batch, (i + 1) * batch)
 
       // prev keys
-      var prevIds = chunk.map(r => { let keyValue = r[key]; delete r[key]; return keyValue; })
-
+      let pIds = chunk.map(r => { let keyValue = r[key]; delete r[key]; return keyValue; })
+      prevIds.push(pIds);
       // insert
-      var newIds = await insertToDb(chunk, tableName, key)//.returning(meta[tableName])
+      let nIds = await insertToDb(chunk, tableName, key)//.returning(meta[tableName])
 
       // set new keys which came from database
-      newIds.forEach((id, i) => data[i][key] = id)
-  
-      // replace structure
-      replaceStructure(structure, prevIds, newIds);        
+      nIds.forEach((id, i) => chunk[i][key] = id)
+      newIds.push(nIds);
     }
 
+    // flatten arrays
+    prevIds = [].concat(...prevIds);
+    newIds = [].concat(...newIds);
+
+    // replace structure
+    replaceStructure(structure, prevIds, newIds);        
   }
   return structure;
 }
