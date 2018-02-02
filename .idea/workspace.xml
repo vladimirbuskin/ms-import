@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b5f89dd-209b-45fc-8cb4-838dee627a65" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.babelrc" afterPath="$PROJECT_DIR$/.babelrc" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/index.js" afterPath="$PROJECT_DIR$/src/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -34,8 +33,11 @@
             <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
-                <marker date="1517579956648" expanded="true" signature="0:854" ph="{&quot;name&quot;: &quot;ms-import&quot;...}" />
-                <marker date="1517579956648" expanded="true" signature="575:852" ph="{&quot;babel-core&quot;: &quot;^6.26.0&quot;...}" />
+                <marker date="1517580898358" expanded="true" signature="0:855" ph="{&quot;name&quot;: &quot;ms-import&quot;...}" />
+                <marker date="1517580898358" expanded="true" signature="106:134" ph="[...]" />
+                <marker date="1517580898358" expanded="true" signature="149:419" ph="{&quot;test&quot;: &quot;mocha -w -r ./test/init.js ./src/**/*.test.js&quot;...}" />
+                <marker date="1517580898358" expanded="true" signature="475:553" ph="{&quot;csv-reader&quot;: &quot;^1.0.1&quot;...}" />
+                <marker date="1517580898358" expanded="true" signature="576:853" ph="{&quot;babel-core&quot;: &quot;^6.26.0&quot;...}" />
               </folding>
             </state>
           </provider>
@@ -303,12 +305,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1517578573271</updated>
-      <workItem from="1517578574739" duration="2162000" />
+      <workItem from="1517578574739" duration="2676000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2162000" />
+    <option name="totallyTimeSpent" value="2676000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
@@ -411,8 +413,11 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1517579956648" expanded="true" signature="0:854" ph="{&quot;name&quot;: &quot;ms-import&quot;...}" />
-            <marker date="1517579956648" expanded="true" signature="575:852" ph="{&quot;babel-core&quot;: &quot;^6.26.0&quot;...}" />
+            <marker date="1517580898358" expanded="true" signature="0:855" ph="{&quot;name&quot;: &quot;ms-import&quot;...}" />
+            <marker date="1517580898358" expanded="true" signature="106:134" ph="[...]" />
+            <marker date="1517580898358" expanded="true" signature="149:419" ph="{&quot;test&quot;: &quot;mocha -w -r ./test/init.js ./src/**/*.test.js&quot;...}" />
+            <marker date="1517580898358" expanded="true" signature="475:553" ph="{&quot;csv-reader&quot;: &quot;^1.0.1&quot;...}" />
+            <marker date="1517580898358" expanded="true" signature="576:853" ph="{&quot;babel-core&quot;: &quot;^6.26.0&quot;...}" />
           </folding>
         </state>
       </provider>
