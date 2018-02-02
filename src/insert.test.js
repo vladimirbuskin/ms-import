@@ -85,7 +85,7 @@ describe('insert', function () {
     })
 
 
-    it.only('replaceStructure speed', function () {
+    it('replaceStructure speed', function () {
         var records = range(1000);
         var fields = range(40);
         var batch = range(50);

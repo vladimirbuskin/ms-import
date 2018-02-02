@@ -11,8 +11,6 @@ export default async function insert(insertToDb, structure, meta, options) {
   for (var tableName of Object.keys(structure)) {
     var data = structure[tableName]
     var key = meta[tableName]
-    // return keys, and remove those
-    var prevIds = data.map(r => { let keyValue = r[key]; delete r[key]; return keyValue; })
     
     // var newIds = await knex.insert(table).returning(meta[tableName])
     options = Object.assign({ batch: 100}, options)
@@ -23,6 +21,9 @@ export default async function insert(insertToDb, structure, meta, options) {
 
       // data chunk
       var chunk = data.slice(i * batch, (i + 1) * batch)
+
+      // prev keys
+      var prevIds = chunk.map(r => { let keyValue = r[key]; delete r[key]; return keyValue; })
 
       // insert
       var newIds = await insertToDb(chunk, tableName, key)//.returning(meta[tableName])
