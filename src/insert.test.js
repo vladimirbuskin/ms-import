@@ -84,6 +84,31 @@ describe('insert', function () {
         })
     })
 
+
+    it.only('replaceStructure speed', function () {
+        var records = range(1000);
+        var fields = range(40);
+        var batch = range(50);
+
+        var l = {
+            project: records.map(function(i) {
+                var r = {}
+                fields.forEach(fi => {
+                    var v = `rec${i}_fld${fi}`;
+                    r[v] = v
+                })
+                return r;
+            }),
+        } 
+        
+        var t0 = new Date();
+        replaceStructure(l, batch.map(b => 'project:' + b), batch.map(b => b))
+        var t1 = new Date();
+
+        console.log("replaceStructure took " + (t1 - t0) + "ms.")
+    })
+
+
     it('insert', async function () {
         var l = {
             project: [

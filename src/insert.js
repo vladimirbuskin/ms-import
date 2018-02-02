@@ -46,10 +46,15 @@ export function replaceStructure(structure, idsPrev, idsNew) {
 }
 
 export function replaceTableId(records, idsPrev, idsNew) {
+  if (records.length === 0) return;
+
+  // record object keys
+  let keys = Object.keys(records[0]);
+
   idsPrev.forEach((prev,i) => {
     let nw = idsNew[i];
     records.forEach(r => {    
-      Object.keys(r).forEach(k => {
+      keys.forEach(k => {
         if (r[k] === prev) {
           r[k] = nw
         }
