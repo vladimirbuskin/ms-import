@@ -9,7 +9,7 @@ export default knex => async (data, table, key) => {
   try {
     //ids = await knex(table).insert(data).returning(key);
     let sql = dataToSql(table, data, key);
-    ids = await knex.raw(sql).map(r => r[key]);    
+    ids = await knex.raw(sql).map(r => +r[key]);    
   } catch(a) {
     writeOutput('errors.json', data);
     throw a;
@@ -17,7 +17,7 @@ export default knex => async (data, table, key) => {
   inserted += data.length;
 
   let s2 = new Date();
-  console.log('inserted', inserted, `in ${s2 - s1}ms`);
+  console.log(`inserted ${table}: ${inserted} in ${s2 - s1}ms`);
 
   return ids
 }
