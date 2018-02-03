@@ -1,7 +1,7 @@
 import writeOutput from './writeOutput'
 import dataToSql from './dataToSql'
 
-let inserted = 0;
+let inserted = {};
 
 export default knex => async (data, table, key) => {
   let s1 = new Date();
@@ -14,10 +14,11 @@ export default knex => async (data, table, key) => {
     writeOutput('errors.json', data);
     throw a;
   }
-  inserted += data.length;
+  inserted[table] = inserted[table] || 0
+  inserted[table] += data.length;
 
   let s2 = new Date();
-  console.log(`inserted ${table}: ${inserted} in ${s2 - s1}ms`);
+  console.log(`inserted ${table}: ${inserted[table]} in ${s2 - s1}ms`);
 
   return ids
 }

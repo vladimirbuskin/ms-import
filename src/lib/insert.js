@@ -1,72 +1,115 @@
 
 
-export default async function insert(insertToDb, structure, meta, options) {
+export default async function insert2(insertToDb, structure, meta, options) {
 
-  if (insertToDb == null) throw new Error('knex is required 1st param')
-  if (structure == null) throw new Error('structure is required 2nd param')
-  if (meta == null) throw new Error('meta is required')
-  if (Object.keys(structure).length != Object.keys(meta).length) throw new Error('meta should contain the same number of keys as structure')
+  if (insertToDb == null) throw new Error('knex is required 1st param');
+  if (structure == null) throw new Error('structure is required 2nd param');
+  if (meta == null) throw new Error('meta is required');
+  if (Object.keys(structure).length !== Object.keys(meta).length) throw new Error('meta should contain the same number of keys as structure')
   options = options || {batch: 100};
 
-  for (var tableName of Object.keys(structure)) {
-    var data = structure[tableName]
-    var key = meta[tableName]
-    
-    // var newIds = await knex.insert(table).returning(meta[tableName])
-    options = Object.assign({ batch: 100}, options)
-    var { batch } = options;
+  // iterate tables
+  for (let tableName of Object.keys(structure)) {
+    let data = structure[tableName];
+    let key = meta[tableName];
 
-    var prevIds = [];
-    var newIds = [];
+    options = Object.assign({ batch: 100}, options);
+    let { batch } = options;
 
     // iterate
-    for (var i=0; i < data.length/batch; i++) {
+    if (data.length > 0) {
+      let keys = Object.keys(data[0]);
+      for (let i = 0; i < data.length / batch; i++) {
 
-      // data chunk
-      let chunk = data.slice(i * batch, (i + 1) * batch)
+        // data chunk copies
+        let chunk = data.slice(i * batch, (i + 1) * batch);
 
-      // prev keys
-      let pIds = chunk.map(r => { let keyValue = r[key]; delete r[key]; return keyValue; })
-      prevIds.push(pIds);
-      // insert
-      let nIds = await insertToDb(chunk, tableName, key)//.returning(meta[tableName])
+        // replace in chunk
+        let tempKeys = chunk.map(r => {
+          let k = r[key];
+          if (typeof(k) !== 'function') throw new Error(`tableName "${tableName}" key ${key}=${k} is not refKey `);
 
-      // set new keys which came from database
-      nIds.forEach((id, i) => chunk[i][key] = id)
-      newIds.push(nIds);
+          return k
+        });
+
+        // prepare for insert, remove refKeys (functions) with values;
+        chunk = chunk.map(r => {
+          // clone
+          let c = Object.assign({}, r);
+
+          // delete key
+          delete c[key];
+
+          // replace refKeys with values
+          keys.forEach(k => {
+            if (typeof(c[k]) === 'function')
+              c[k] = c[k]()
+          });
+
+          return c;
+        });
+
+        // insert
+        let realKeys = await insertToDb(chunk, tableName, key);
+
+        // set new values of keys
+        tempKeys.forEach((x, i) => x(realKeys[i]));
+      }
     }
-
-    // flatten arrays
-    prevIds = [].concat(...prevIds);
-    newIds = [].concat(...newIds);
-
-    // replace structure
-    replaceStructure(structure, prevIds, newIds);        
   }
+
+  // replace keys
+  replaceKeys(structure);
+
   return structure;
 }
 
 
-export function replaceStructure(structure, idsPrev, idsNew) {
+export function replaceKeys(structure) {
   Object.keys(structure).forEach(table => {
-    replaceTableId(structure[table], idsPrev, idsNew)
+    let data = structure[table];
+    if (data.length > 0) {
+      let keys = Object.keys(data[0]);
+      data.forEach(rec => {
+        keys.forEach(key => {
+          let val = rec[key];
+          // replace keyFunction with keyValue
+          if (typeof val === 'function') {
+            rec[key] = val();
+          }
+        })
+      })
+    }
   })
 }
 
-export function replaceTableId(records, idsPrev, idsNew) {
-  if (records.length === 0) return;
-
-  // record object keys
-  let keys = Object.keys(records[0]);
-
-  idsPrev.forEach((prev,i) => {
-    let nw = idsNew[i];
-    records.forEach(r => {    
-      keys.forEach(k => {
-        if (r[k] === prev) {
-          r[k] = nw
+export function replaceKeysTable(data) {
+  if (data.length > 0) {
+    let keys = Object.keys(data[0]);
+    data.forEach(rec => {
+      keys.forEach(key => {
+        let val = rec[key];
+        // replace keyFunction with keyValue
+        if (typeof val === 'function') {
+          rec[key] = val();
         }
-      })      
+      })
     })
-  })
+  }
+}
+
+
+export function deleteKeys(data) {
+  if (data.length > 0) {
+    let keys = Object.keys(data[0]);
+    data.forEach(rec => {
+      keys.forEach(key => {
+        let val = rec[key];
+        // replace keyFunction with keyValue
+        if (typeof val === 'function') {
+          rec[key] = val();
+        }
+      })
+    })
+  }
 }

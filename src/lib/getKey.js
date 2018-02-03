@@ -1,3 +1,10 @@
-export default function getKey(type, id, unique = 'asdf1234!@#$') {
-  return [type, id, unique].join("|");
+export default function makeRefKey() {
+  let key = null;
+  return (v) => {
+
+    if (v != null)
+      key = v;
+
+    return key;
+  };
 }
