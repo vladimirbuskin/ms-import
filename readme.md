@@ -24,7 +24,7 @@ let {
   writeOutput,
   getKey,
   readFull
-} = require('ms-import');
+} = require('./index');
 
 // 0. DECLARE STRUCTURE, keys are table names data to be inserted into
 // ===========================
@@ -33,7 +33,7 @@ let structure = {
   Phone: [],
 };
 
-(async function() {
+async function start() {
 
   let data = await readFull('./usr.csv');
 
@@ -160,12 +160,12 @@ let structure = {
     );
   }
   catch (e) {
-    throw e;
+    return false;
   }
   finally {
     knex.destroy();
   }
-
-})();
+  return true;
+}
 
 ```
