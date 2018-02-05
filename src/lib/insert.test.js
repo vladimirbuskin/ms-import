@@ -53,12 +53,15 @@ describe('insert2', function () {
 
     let struct = {
       user: [
-        {id: userId1, name: 'vladimir'},
+        // allow single quote
+        {id: userId1, name: "vladimir's"},
         {id: userId2, name: 'igor'},
       ],
       phone: [
-        {id: phoneId1, userId: userId2, phone: ()=>"555-111'"},
-        {id: phoneId2, userId: userId1, phone: '555-222'},
+        // allows key value,
+        // allows function value
+        {id: phoneId1, userId: 'user44', phone: ()=>"555-111"},
+        {id: phoneId2, userId: userId2, phone: '555-222'},
         {id: phoneId3, userId: userId1, phone: '555-222'},
       ]
     };
@@ -72,12 +75,12 @@ describe('insert2', function () {
     let res = await insert2(insertToDb2, struct, {user: 'id', phone: 'id'});
     expect(res).deep.equal({
       user: [
-        {id: 'user1', name: 'vladimir'},
+        {id: 'user1', name: "vladimir's"},
         {id: 'user2', name: 'igor'}
       ],
       phone: [
-        {id: 'phone1', userId: 'user2', phone: "555-111'"},
-        {id: 'phone2', userId: 'user1', phone: '555-222'},
+        {id: 'phone1', userId: 'user44', phone: "555-111"},
+        {id: 'phone2', userId: 'user2', phone: '555-222'},
         {id: 'phone3', userId: 'user1', phone: '555-222'}
       ]
     })
