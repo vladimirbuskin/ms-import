@@ -13,8 +13,12 @@ export default function data(table, data, key) {
 
 
 function quote(v) {
-  if (typeof(v) == 'string')
+  if (typeof(v) == 'function')
+    return v();
+  else if (typeof(v) == 'string')
     return "'" + v.replace(/'/g, "''") + "'";
+  else if (v === null)
+    return 'null'
   else 
     return v;
 }

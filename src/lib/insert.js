@@ -42,7 +42,7 @@ export default async function insert2(insertToDb, structure, meta, options) {
 
           // replace refKeys with values
           keys.forEach(k => {
-            if (typeof(c[k]) === 'function')
+            if (typeof(c[k]) === 'function' && c[k].key === true)
               c[k] = c[k]()
           });
 

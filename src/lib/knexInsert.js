@@ -18,7 +18,7 @@ export default knex => async (data, table, key) => {
   inserted[table] += data.length;
 
   let s2 = new Date();
-  console.log(`inserted ${table}: ${inserted[table]} in ${s2 - s1}ms`);
+  console.info(`inserted ${table}: ${inserted[table]} in ${s2 - s1}ms`);
 
   return ids
 }

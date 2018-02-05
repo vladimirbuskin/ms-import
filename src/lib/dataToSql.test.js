@@ -5,12 +5,14 @@ let data = [
 	{
 		"fname": "vladimir", 
 		"lname":'buskin', 
-		"address": "157-166 push'kinskaya" 
+		"address": "157-166 push'kinskaya",
+		"geo": () => "geometry::STGeomFromText('LINESTRING (-106.42665 42.87465, -106.42658 42.87465)', 4326)"
 	},
 	{
 		"fname": "dima", 
 		"lname":'ogo', 
-		"address": "30 lenina" 
+		"address": "30 lenina",
+		"geo": null
 	}
 ];
 
@@ -20,7 +22,7 @@ describe('dataToSql', function() {
 
 		let sql = dataToSql('account', data, 'id');
 
-		expect(sql).deep.equal("insert into [account] ([fname],[lname],[address]) output inserted.[id] values ('vladimir','buskin','157-166 push''kinskaya'),('dima','ogo','30 lenina')")
+		expect(sql).deep.equal("insert into [account] ([fname],[lname],[address],[geo]) output inserted.[id] values ('vladimir','buskin','157-166 push''kinskaya',geometry::STGeomFromText('LINESTRING (-106.42665 42.87465, -106.42658 42.87465)', 4326)),('dima','ogo','30 lenina',null)")
 	});
 
 });

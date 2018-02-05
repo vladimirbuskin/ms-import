@@ -25,7 +25,6 @@ export default function(filename, data) {
         }
 
         // write to file
-        console.log('FILE', fd);
         fs.write(fd, data, function(err) {
 
           if (err) return rej(err);

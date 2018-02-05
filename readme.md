@@ -101,7 +101,7 @@ async function start() {
   await writeOutput("./out/duplicates.json", dups);
   if (dups)
   {
-    console.log('validation error');
+    console.error('validation error');
     return;
   }
 

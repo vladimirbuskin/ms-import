@@ -40,6 +40,8 @@ async function start() {
         {name: 'login', value: 'Company', length: 50},
         {name: 'name', value: 'FName', length: 50},
         {name: 'type', value: 'Type'},
+        // this will insert string as is, without quotes
+        {name: 'geometry', value: d => () => `geometry::STGeomFromText('POINT (${d.Type} ${d.Type})', 4326)`}
       ]
     );
 
@@ -65,7 +67,6 @@ async function start() {
         phone: phones.phone
       });
     }
-
     // second phone as second record
     if (phones.phone2 != null) {
       structure.Phone.push({
@@ -84,7 +85,7 @@ async function start() {
   await writeOutput("./out/duplicates.json", dups);
   if (dups)
   {
-    console.log('validation error');
+    console.error('validation error');
     return;
   }
 
@@ -117,6 +118,7 @@ async function start() {
       [login] nvarchar(50),
       [name] nvarchar (50),
       [type] bigint,
+      [geometry] geometry,
     )
     create table [Phone] (
       id bigint identity,
