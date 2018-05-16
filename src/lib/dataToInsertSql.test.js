@@ -1,4 +1,4 @@
-import dataToSql from './dataToSql'
+import dataToSql from './dataToInsertSql'
 import getKey2 from './getKey'
 
 let data = [
@@ -16,7 +16,7 @@ let data = [
 	}
 ];
 
-describe('dataToSql', function() {
+describe('dataToInsertSql', function() {
 
 	it('works', function() {
 

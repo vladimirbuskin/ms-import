@@ -6,6 +6,9 @@ import getKey from './getKey'
 let insertToDb = (chunk, tableName, key) => {
   return range(chunk.length).map(k => tableName + k);
 };
+let updateToDb = (chunk, tableName, key) => {
+  return chunk.length;
+};
 
 describe('insert2', function () {
 
@@ -29,7 +32,7 @@ describe('insert2', function () {
       ]
     };
 
-    let res = await insert2(insertToDb, struct, {user: 'id', phone: 'id'});
+    let res = await insert2(insertToDb, updateToDb, struct, {user: 'id', phone: 'id'});
     expect(res).deep.equal({
       user: [
         {id: 'user1', name: 'vladimir'},
@@ -54,8 +57,8 @@ describe('insert2', function () {
     let struct = {
       user: [
         // allow single quote
-        {id: userId1, name: "vladimir's"},
-        {id: userId2, name: 'igor'},
+        {id: userId1, name: "vladimir's", primaryPhone: phoneId2},
+        {id: userId2, name: 'igor', primaryPhone: phoneId3},
       ],
       phone: [
         // allows key value,
@@ -72,11 +75,11 @@ describe('insert2', function () {
       return range(chunk.length).map(k => tableName + k);
     };
 
-    let res = await insert2(insertToDb2, struct, {user: 'id', phone: 'id'});
+    let res = await insert2(insertToDb2, updateToDb, struct, {user: 'id', phone: 'id'});
     expect(res).deep.equal({
       user: [
-        {id: 'user1', name: "vladimir's"},
-        {id: 'user2', name: 'igor'}
+        {id: 'user1', name: "vladimir's", primaryPhone: "phone2"},
+        {id: 'user2', name: 'igor', primaryPhone: "phone3"},
       ],
       phone: [
         {id: 'phone1', userId: 'user44', phone: "555-111"},

@@ -1,5 +1,5 @@
 import writeOutput from './writeOutput'
-import dataToSql from './dataToSql'
+import dataToSql from './dataToInsertSql'
 
 let inserted = {};
 

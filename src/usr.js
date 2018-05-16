@@ -1,7 +1,10 @@
+require('babel-core/register')
+
 let knx = require('knex');
 let {
   insert,
   knexInsert,
+  knexUpdate,
   mapper,
   duplicateChecker,
   writeOutput,
@@ -59,10 +62,13 @@ async function start() {
     // one user for each csv row
     structure.User.push(user);
 
+    let phone1Key = getKey();
+    let phone2Key = getKey();
+
     // first phone as first record
     if (phones.phone != null) {
       structure.Phone.push({
-        id: getKey(),
+        id: phone1Key,
         userId: userId,
         phone: phones.phone
       });
@@ -70,13 +76,16 @@ async function start() {
     // second phone as second record
     if (phones.phone2 != null) {
       structure.Phone.push({
-        id: getKey(),
+        id: phone2Key,
         userId: userId,
         phone: phones.phone2
       });
     }
-  });
 
+    // first phone is primary phone, this is 2nd path update.
+    user.primaryPhone = phone1Key;
+  });
+  console.log('1 done');
 
   // 2. VALIDATE DATA, check field unique
   // ===========================
@@ -88,6 +97,7 @@ async function start() {
     console.error('validation error');
     return;
   }
+  console.log('2 done');
 
   // 3. PREPARE DATABASE connection and structure
   // tables are created just to show structure.
@@ -119,6 +129,7 @@ async function start() {
       [name] nvarchar (50),
       [type] bigint,
       [geometry] geometry,
+      [primaryPhone] bigint,
     )
     create table [Phone] (
       id bigint identity,
@@ -126,12 +137,14 @@ async function start() {
       [phone] nvarchar (20),
     ) 
   `);
+  console.log('3 done');
 
   // 4. RUN INSERT PROCESS
   // ===========================
   try {
     await insert(
       knexInsert(knex),
+      knexUpdate(knex),
       structure,
       {
         // we must specify key column for each table
@@ -150,6 +163,8 @@ async function start() {
   finally {
     knex.destroy();
   }
+  console.log('4 done');
+
   return true;
 }
 

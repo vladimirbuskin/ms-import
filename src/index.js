@@ -11,8 +11,12 @@ export {default as mapper} from './lib/mapper'
 //
 export {default as duplicateChecker} from './lib/duplicateChecker'
 export {default as writeOutput} from './lib/writeOutput'
-export {default as dataToSql} from './lib/dataToSql'
+
+export {default as dataToInsertSql} from './lib/dataToInsertSql'
+export {default as dataToUpdateSql} from './lib/dataToUpdateSql'
+
 export {default as knexInsert} from './lib/knexInsert'
+export {default as knexUpdate} from './lib/knexUpdate'
 
 // range function
 // export {default as range} from './lib/range'
