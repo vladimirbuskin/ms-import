@@ -7,7 +7,9 @@ export default function data(table, data, key) {
 
   let values = data.map(r => '(' + fields.map(f => quote(r[f])).join(',') + ')')
 
-  let sql = `insert into [${table}] (${fields.map(f=>'['+f+']')}) output inserted.[${key}] values ${values.join(',')}`;
+  let keyIsEmpty = (key === '' || key == null);
+
+  let sql = `insert into [${table}] (${fields.map(f=>'['+f+']')}) ${ keyIsEmpty ? '':`output inserted.[${key}] `}values ${values.join(',')}`;
   return sql
 }
 
