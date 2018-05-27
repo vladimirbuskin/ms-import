@@ -34,6 +34,11 @@ export default async function insert2(insertToDb, updateToDb, structure, meta, o
         // replace in chunk
         let tempKeys = chunk.map(r => {
           let k = r[key];
+          // when key is not identity, key will be specified as empty string
+          // or any
+          if (key == '' || key == null || typeof(k)==='string') return ()=>k;
+
+          // if it is regular key, check that this is refKey
           if (typeof(k) !== 'function') throw new Error(`tableName "${tableName}" key ${key}=${k} is not refKey `);
 
           return k

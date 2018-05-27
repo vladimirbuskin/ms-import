@@ -89,6 +89,31 @@ describe('insert2', function () {
     })
   });
 
+  it('works3', async function () {
+
+    let userId1 = getKey();
+    let userId2 = getKey();
+    let phoneId1 = getKey();
+    let phoneId2 = getKey();
+    let phoneId3 = getKey();
+
+    let struct = {
+      user: [
+        {id: 'user1', name: 'vladimir' },
+        {id: 'user2', name: 'igor'},
+      ]
+    };
+
+    let res = await insert2(insertToDb, updateToDb, struct, {user: ''});
+    expect(res).deep.equal({
+      user: [
+        {id: 'user1', name: 'vladimir'},
+        {id: 'user2', name: 'igor'}
+      ]
+    })
+    
+  });
+
 });
 
 
