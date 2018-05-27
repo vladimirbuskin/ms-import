@@ -17,6 +17,7 @@ let {
 let structure = {
   User: [],
   Phone: [],
+  Simple: []
 };
 
 async function start() {
@@ -85,6 +86,9 @@ async function start() {
     // first phone is primary phone, this is 2nd path update.
     user.primaryPhone = phone1Key;
   });
+  structure.Simple.push({value:'value1'});
+  structure.Simple.push({value:'value2'});
+
   console.log('1 done');
 
   // 2. VALIDATE DATA, check field unique
@@ -121,6 +125,10 @@ async function start() {
     await knex.raw(`drop table [Phone]`);
   }
   catch (e){}
+  try {
+    await knex.raw(`drop table [Simple]`);
+  }
+  catch (e){}
 
   await knex.raw(
   ` create table [User] (
@@ -135,6 +143,9 @@ async function start() {
       id bigint identity,
       [userId] bigint,
       [phone] nvarchar (20),
+    )
+    create table [Simple] (
+      [value] nvarchar(20)
     ) 
   `);
   console.log('3 done');
@@ -150,6 +161,7 @@ async function start() {
         // we must specify key column for each table
         User: 'id',
         Phone: 'id',
+        Simple: null
       },
       {
         // batch size

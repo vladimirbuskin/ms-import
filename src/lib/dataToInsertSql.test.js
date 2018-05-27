@@ -32,4 +32,10 @@ describe('dataToInsertSql', function() {
 		expect(sql).deep.equal("insert into [account] ([fname],[lname],[address],[geo]) values ('vladimir','buskin','157-166 push''kinskaya',geometry::STGeomFromText('LINESTRING (-106.42665 42.87465, -106.42658 42.87465)', 4326)),('dima','ogo','30 lenina',null)")
 	});
 
+	it('empty col', function () {
+
+		let sql = dataToSql('account', [{fname:'vladimir',lname:undefined}], '');
+		expect(sql).deep.equal("insert into [account] ([fname],[lname]) values ('vladimir',null)");
+	});
+
 });

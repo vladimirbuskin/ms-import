@@ -9,7 +9,11 @@ export default knex => async (data, table, key) => {
   try {
     //ids = await knex(table).insert(data).returning(key);
     let sql = dataToSql(table, data, key);
-    ids = await knex.raw(sql).map(r => +r[key]);    
+    let res = await knex.raw(sql);
+    // if res not empty
+    // those are keys, map those.
+    if (res)
+      ids = res.map(r => +r[key]);
   } catch(a) {
     writeOutput('errors.json', data);
     throw a;
