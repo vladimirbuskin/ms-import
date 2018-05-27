@@ -89,7 +89,7 @@ describe('insert2', function () {
     })
   });
 
-  it('works3', async function () {
+  it('works no IDENTITY keys', async function () {
 
     let userId1 = getKey();
     let userId2 = getKey();
@@ -105,13 +105,10 @@ describe('insert2', function () {
     };
 
     let res = await insert2(insertToDb, updateToDb, struct, {user: ''});
-    expect(res).deep.equal({
-      user: [
-        {id: 'user1', name: 'vladimir'},
-        {id: 'user2', name: 'igor'}
-      ]
-    })
-    
+    expect(res).deep.equal(struct)
+    let res2 = await insert2(insertToDb, updateToDb, struct, {user: null});
+    expect(res2).deep.equal(struct)
+
   });
 
 });
