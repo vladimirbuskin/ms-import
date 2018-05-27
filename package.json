@@ -11,6 +11,7 @@
     "test": "mocha -w -r ./test/init.js ./src/**/*.test.js",
     "cov": "nyc --reporter=text mocha -r ./test/init.js ./src/**/*.test.js",
     "publ": "babel src --out-dir lib && npm version patch && npm publish",
+    "publMinor": "babel src --out-dir lib && npm version minor && npm publish",
     "start": "nodemon -r ./src/init ./src/index.js"
   },
   "author": "",
