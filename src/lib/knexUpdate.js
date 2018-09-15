@@ -13,6 +13,8 @@ export default knex => async (data, table, key) => {
   } catch(a) {
     writeOutput('errorsUpdate.json', data);
     writeOutput('errorsUpdate.sql', sql);
+    console.log('check errorsUpdate.json for data');
+    console.log('check errorsUpdate.sql for sql');
     throw a;
   }
   inserted[table] = inserted[table] || 0;
