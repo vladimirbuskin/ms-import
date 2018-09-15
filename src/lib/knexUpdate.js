@@ -6,11 +6,13 @@ let inserted = {};
 export default knex => async (data, table, key) => {
   let s1 = new Date();
   let cnt = 0;
+  let sql;
   try {
-    let sql = dataToUpdateSql(table, data, key);
+    sql = dataToUpdateSql(table, data, key);
     cnt = await knex.raw(sql);
   } catch(a) {
     writeOutput('errorsUpdate.json', data);
+    writeOutput('errorsUpdate.sql', sql);
     throw a;
   }
   inserted[table] = inserted[table] || 0;

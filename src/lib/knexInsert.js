@@ -6,9 +6,10 @@ let inserted = {};
 export default knex => async (data, table, key) => {
   let s1 = new Date();
   let ids = [];
+  let sql = null;
   try {
     //ids = await knex(table).insert(data).returning(key);
-    let sql = dataToSql(table, data, key);
+    sql = dataToSql(table, data, key);
     let res = await knex.raw(sql);
     // if res not empty
     // those are keys, map those.
@@ -16,6 +17,10 @@ export default knex => async (data, table, key) => {
       ids = res.map(r => +r[key]);
   } catch(a) {
     writeOutput('errors.json', data);
+    writeOutput('errors.sql', sql);
+
+    console.ERROR('check errors.sql for sql');
+    console.ERROR('check errors.json for data');
     throw a;
   }
   inserted[table] = inserted[table] || 0
